@@ -1,20 +1,17 @@
 %define name clusterscripts
 %define version 2.0
 %define release %mkrel 16
-#%define	perl_vendorlib /usr/lib/perl5/vendor_perl/5.8.8
 
 Summary: Tools to setup a cluster server and client
 Name: %{name}
 Version: %{version}
 Release: %{release}
-#Source0: %{name}-%{version}.tar.bz2
 Source0: %{name}-devel.tar.bz2
 License: 	GPL
 Group: 		System/Cluster
 BuildRoot: 	%{_tmppath}/%{name}-buildroot
 Prefix: 	%{_prefix}
 URL:		http://www.mandriva.com
-#Packager: 	Antoine Ginies <aginies@n1.mandriva.com>
 buildarch:	noarch
 #obsolotes:	clusterautosetup-server
 
