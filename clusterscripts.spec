@@ -1,6 +1,6 @@
 %define name clusterscripts
 %define version 2.0
-%define release %mkrel 15
+%define release %mkrel 16
 #%define	perl_vendorlib /usr/lib/perl5/vendor_perl/5.8.8
 
 Summary: Tools to setup a cluster server and client
@@ -10,7 +10,7 @@ Release: %{release}
 #Source0: %{name}-%{version}.tar.bz2
 Source0: %{name}-devel.tar.bz2
 License: 	GPL
-Group: 		System/Deployment
+Group: 		System/Cluster
 BuildRoot: 	%{_tmppath}/%{name}-buildroot
 Prefix: 	%{_prefix}
 URL:		http://www.mandriva.com
@@ -24,7 +24,7 @@ Multiple scripts to setup cluster server or client nodes.
 
 %package        client
 Summary:	Script to setup and retrieve information for client node.
-Group:		System/Deployment
+Group:		System/Cluster
 Conflicts:	%{name}-server, clusterautosetup-server
 prereq:		rpm-helper
 Requires:	bind-utils, xli, ypbind, autofs,wget,openssh-clients,openssh-server, tftp, nfs-utils, gexec, xinitrc, rsh-server, ntp, ka-deploy-source-node, oar-user, oar-node, clone, usbutils, urpmi-parallel-ka-run, bc, dhcpcd, smartmontools, ganglia-core, qiv, cloop-utils, taktuk2
@@ -36,7 +36,7 @@ a server.
 
 %package server 
 Summary:        Script to setup a server node.
-Group:		System/Deployment
+Group:		System/Cluster
 Conflicts:	%{name}-client, clusterautosetup-client
 Requires:	bind, bind-utils, nfs-utils, ypserv,yp-tools,ypbind,pxe,tftp-server, xinetd,make,dhcp-server, oar-user, oar-node, oar-server, oar-draw-gantt,openssh-server,openssh-clients, pxe, xli, ntp, ganglia-gmetad,urpmi-parallel-ka-run, apache, postfix, iptables,xpdf, xterm, ganglia-core, icewm,mutt, pvm, rpm-helper, syslinux, proftpd, proftpd-anonymous, usbutils, shorewall, bc, php-cli, apache2-mod_php, gexec, smartmontools, monika, qiv, tentakel, ganglia-webfrontend, taktuk2, fping, cloop-utils
 #gnbd, gnbd-kernel-BOOT, 
