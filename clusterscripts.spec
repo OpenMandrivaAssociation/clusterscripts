@@ -23,7 +23,8 @@ Multiple scripts to setup cluster server or client nodes.
 Summary:	Script to setup and retrieve information for client node.
 Group:		System/Cluster
 Conflicts:	%{name}-server, clusterautosetup-server
-prereq:		rpm-helper
+Requires(post):		rpm-helper
+Requires(postun):		rpm-helper
 Requires:	bind-utils, xli, ypbind, autofs,wget,openssh-clients,openssh-server, tftp, nfs-utils, gexec, xinitrc, rsh-server, ntp, ka-deploy-source-node, oar-user, oar-node, clone, usbutils, urpmi-parallel-ka-run, bc, dhcpcd, smartmontools, ganglia-core, qiv, cloop-utils, taktuk2
 #obsolotes:	clusterautosetup-client
 
