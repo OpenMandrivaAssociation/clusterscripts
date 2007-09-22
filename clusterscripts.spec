@@ -1,6 +1,6 @@
 %define name clusterscripts
 %define version 2.0
-%define release %mkrel 17
+%define release %mkrel 18
 
 Summary: Tools to setup a cluster server and client
 Name: %{name}
@@ -13,7 +13,6 @@ BuildRoot: 	%{_tmppath}/%{name}-buildroot
 Prefix: 	%{_prefix}
 URL:		http://www.mandriva.com
 buildarch:	noarch
-#obsolotes:	clusterautosetup-server
 
 %description
 Multiple scripts to setup cluster server or client nodes.
@@ -25,8 +24,10 @@ Group:		System/Cluster
 Conflicts:	%{name}-server, clusterautosetup-server
 Requires(post):		rpm-helper
 Requires(postun):		rpm-helper
-Requires:	bind-utils, xli, ypbind, autofs,wget,openssh-clients,openssh-server, tftp, nfs-utils, gexec, xinitrc, rsh-server, ntp, ka-deploy-source-node, oar-user, oar-node, clone, usbutils, urpmi-parallel-ka-run, bc, dhcpcd, smartmontools, ganglia-core, qiv, cloop-utils, taktuk2
-#obsolotes:	clusterautosetup-client
+Requires:	bind-utils xli ypbind autofs wget openssh-clients openssh-server
+Requires:	tftp nfs-utils gexec xinitrc rsh-server ntp ka-deploy-source-node
+Requires:	oar-user oar-node clone usbutils urpmi-parallel-ka-run bc dhcpcd
+Requires:	smartmontools ganglia-core qiv cloop-utils taktuk2
 
 %description client
 script to retrieve information and setup cluster client node from 
@@ -36,7 +37,14 @@ a server.
 Summary:        Script to setup a server node.
 Group:		System/Cluster
 Conflicts:	%{name}-client, clusterautosetup-client
-Requires:	bind, bind-utils, nfs-utils, ypserv,yp-tools,ypbind,pxe,tftp-server, xinetd,make,dhcp-server, oar-user, oar-node, oar-server, oar-draw-gantt,openssh-server,openssh-clients, pxe, xli, ntp, ganglia-gmetad,urpmi-parallel-ka-run, apache, postfix, iptables,xpdf, xterm, ganglia-core, icewm,mutt, pvm, rpm-helper, syslinux, proftpd, proftpd-anonymous, usbutils, shorewall, bc, php-cli, apache2-mod_php, gexec, smartmontools, monika, qiv, tentakel, ganglia-webfrontend, taktuk2, fping, cloop-utils
+Requires:	bind bind-utils nfs-utils ypserv yp-tools ypbind pxe tftp-server
+Requires:	xinetd make dhcp-server oar-user oar-node oar-server
+Requires:	oar-draw-gantt openssh-server openssh-clients pxe xli ntp
+Requires:	ganglia-gmetad urpmi-parallel-ka-run apache postfix iptables
+Requires:	xpdf xterm ganglia-core icewm mutt pvm rpm-helper syslinux
+Requires:	usbutils shorewall bc php-cli apache2-mod_php gexec smartmontools
+Requires:	monika qiv tentakel ganglia-webfrontend taktuk2 fping cloop-utils
+Requires:	pure-ftpd-anonymous
 #gnbd, gnbd-kernel-BOOT, 
 #maui
 
