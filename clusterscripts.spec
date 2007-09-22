@@ -42,7 +42,7 @@ Requires:	xinetd make dhcp-server oar-user oar-node oar-server
 Requires:	oar-draw-gantt openssh-server openssh-clients pxe xli ntp
 Requires:	ganglia-gmetad urpmi-parallel-ka-run apache postfix iptables
 Requires:	xpdf xterm ganglia-core icewm mutt pvm rpm-helper syslinux
-Requires:	usbutils shorewall bc php-cli apache2-mod_php gexec smartmontools
+Requires:	usbutils shorewall bc php-cli apache-mod_php gexec smartmontools
 Requires:	monika qiv tentakel ganglia-webfrontend taktuk2 fping cloop-utils
 Requires:	pure-ftpd-anonymous
 #gnbd, gnbd-kernel-BOOT, 
