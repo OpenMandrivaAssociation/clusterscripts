@@ -44,7 +44,7 @@ Requires:	ganglia-gmetad urpmi-parallel-ka-run apache postfix iptables
 Requires:	xpdf xterm ganglia-core icewm mutt pvm rpm-helper syslinux
 Requires:	usbutils shorewall bc php-cli apache-mod_php gexec smartmontools
 Requires:	monika qiv tentakel ganglia-webfrontend taktuk2 fping cloop-utils
-Requires:	pure-ftpd-anonymous
+Requires:	pure-ftpd-anonymous pure-ftpd-anon-upload
 #gnbd, gnbd-kernel-BOOT, 
 #maui
 
