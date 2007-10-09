@@ -19,7 +19,7 @@ Multiple scripts to setup cluster server or client nodes.
 
 
 %package        client
-Summary:	Script to setup and retrieve information for client node.
+Summary:	Script to setup and retrieve information for client node
 Group:		System/Cluster
 Conflicts:	%{name}-server, clusterautosetup-server
 Requires(post):		rpm-helper
@@ -34,7 +34,7 @@ script to retrieve information and setup cluster client node from
 a server.
 
 %package server 
-Summary:        Script to setup a server node.
+Summary:        Script to setup a server node
 Group:		System/Cluster
 Conflicts:	%{name}-client, clusterautosetup-client
 Requires:	bind bind-utils nfs-utils ypserv yp-tools ypbind pxe tftp-server
