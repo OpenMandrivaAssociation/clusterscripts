@@ -9,7 +9,6 @@ Release: %{release}
 Source0: %{name}-devel.tar.bz2
 License: 	GPL
 Group: 		System/Cluster
-BuildRoot: 	%{_tmppath}/%{name}-buildroot
 Prefix: 	%{_prefix}
 URL:		http://www.mandriva.com
 buildarch:	noarch
