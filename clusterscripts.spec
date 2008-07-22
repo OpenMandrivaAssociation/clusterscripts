@@ -1,6 +1,6 @@
 %define name clusterscripts
 %define version 2.0
-%define release %mkrel 18
+%define release %mkrel 20
 
 Summary: Tools to setup a cluster server and client
 Name: %{name}
