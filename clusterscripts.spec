@@ -1,18 +1,17 @@
 %define name clusterscripts
 %define version 2.0
-%define release %mkrel 20
+%define release %mkrel 21
 
-Summary: Tools to setup a cluster server and client
-Name: %{name}
-Version: %{version}
-Release: %{release}
-Source0: %{name}-devel.tar.bz2
+Name:       %{name}
+Version:    %{version}
+Release:    %{release}
+Source0:    %{name}-devel.tar.bz2
+Summary:    Tools to setup a cluster server and client
 License: 	GPL
 Group: 		System/Cluster
-BuildRoot: 	%{_tmppath}/%{name}-buildroot
-Prefix: 	%{_prefix}
 URL:		http://www.mandriva.com
 buildarch:	noarch
+BuildRoot: 	%{_tmppath}/%{name}-%{version}
 
 %description
 Multiple scripts to setup cluster server or client nodes.
@@ -27,7 +26,7 @@ Requires(postun):		rpm-helper
 Requires:	bind-utils xli ypbind autofs wget openssh-clients openssh-server
 Requires:	tftp nfs-utils gexec xinitrc rsh-server ntp ka-deploy-source-node
 Requires:	oar-user oar-node clone usbutils urpmi-parallel-ka-run bc dhcpcd
-Requires:	smartmontools ganglia-core qiv cloop-utils taktuk2
+Requires:	smartmontools ganglia-core qiv cloop-utils taktuk
 
 %description client
 script to retrieve information and setup cluster client node from 
@@ -39,11 +38,11 @@ Group:		System/Cluster
 Conflicts:	%{name}-client, clusterautosetup-client
 Requires:	bind bind-utils nfs-utils ypserv yp-tools ypbind pxe tftp-server
 Requires:	xinetd make dhcp-server oar-user oar-node oar-server
-Requires:	oar-draw-gantt openssh-server openssh-clients pxe xli ntp
+Requires:	oar-web-status openssh-server openssh-clients pxe xli ntp
 Requires:	ganglia-gmetad urpmi-parallel-ka-run apache postfix iptables
 Requires:	xpdf xterm ganglia-core icewm mutt pvm rpm-helper syslinux
 Requires:	usbutils shorewall bc php-cli apache-mod_php gexec smartmontools
-Requires:	monika qiv tentakel ganglia-webfrontend taktuk2 fping cloop-utils
+Requires:	monika qiv tentakel ganglia-webfrontend taktuk fping cloop-utils
 Requires:	pure-ftpd-anonymous pure-ftpd-anon-upload
 #gnbd, gnbd-kernel-BOOT, 
 #maui
