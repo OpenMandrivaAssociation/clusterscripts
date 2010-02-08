@@ -1,49 +1,42 @@
 %define name clusterscripts
-%define version 2.0
-%define release %mkrel 21
+%define version 3.0
+%define release %mkrel 3
+#define	perl_vendorlib /usr/lib/perl5/vendor_perl/5.8.7
 
-Name:       %{name}
-Version:    %{version}
-Release:    %{release}
-Source0:    %{name}-devel.tar.bz2
-Summary:    Tools to setup a cluster server and client
+Summary: Tools to setup a cluster server and client
+Name: %{name}
+Version: %{version}
+Release: %{release}
+#Source0: %{name}-%{version}.tar.bz2
+Source0: %{name}-devel.tar.bz2
 License: 	GPL
-Group: 		System/Cluster
+Group: 		System/Deploiment
+BuildRoot: 	%{_tmppath}/%{name}-buildroot
+Prefix: 	%{_prefix}
 URL:		http://www.mandriva.com
 buildarch:	noarch
-BuildRoot: 	%{_tmppath}/%{name}-%{version}
+#obsolotes:	clusterautosetup-server
 
 %description
 Multiple scripts to setup cluster server or client nodes.
 
 
 %package        client
-Summary:	Script to setup and retrieve information for client node
-Group:		System/Cluster
+Summary:	Script to setup and retrieve information for client node.
+Group:		System/Deploiment
 Conflicts:	%{name}-server, clusterautosetup-server
-Requires(post):		rpm-helper
-Requires(postun):		rpm-helper
-Requires:	bind-utils xli ypbind autofs wget openssh-clients openssh-server
-Requires:	tftp nfs-utils gexec xinitrc rsh-server ntp ka-deploy-source-node
-Requires:	oar-user oar-node clone usbutils urpmi-parallel-ka-run bc dhcpcd
-Requires:	smartmontools ganglia-core qiv cloop-utils taktuk
+prereq:		rpm-helper
+Requires:	bind-utils, ypbind, autofs, wget,openssh-clients, openssh-server, tftp, nfs-utils, rsh-server, ntp, ka-deploy-source-node, oar-user, oar-node, usbutils, urpmi-parallel-ka-run, bc, dhcpcd, smartmontools, ganglia-core, taktuk
 
 %description client
 script to retrieve information and setup cluster client node from 
 a server.
 
 %package server 
-Summary:        Script to setup a server node
-Group:		System/Cluster
+Summary:        Script to setup a server node.
+Group:		System/Deploiment
 Conflicts:	%{name}-client, clusterautosetup-client
-Requires:	bind bind-utils nfs-utils ypserv yp-tools ypbind pxe tftp-server
-Requires:	xinetd make dhcp-server oar-user oar-node oar-server
-Requires:	oar-web-status openssh-server openssh-clients pxe xli ntp
-Requires:	ganglia-gmetad urpmi-parallel-ka-run apache postfix iptables
-Requires:	xpdf xterm ganglia-core icewm mutt pvm rpm-helper syslinux
-Requires:	usbutils shorewall bc php-cli apache-mod_php gexec smartmontools
-Requires:	monika qiv tentakel ganglia-webfrontend taktuk fping cloop-utils
-Requires:	pure-ftpd-anonymous pure-ftpd-anon-upload
+Requires:	bind, bind-utils, nfs-utils, ypserv, yp-tools, ypbind, pxe, tftp-server, xinetd, make, dhcp-server, oar-user, oar-node, oar-server, openssh-server, openssh-clients, ntp, ganglia-gmetad, urpmi-parallel-ka-run, apache, postfix, iptables, ganglia-core, rpm-helper, syslinux, usbutils, bc, php-cli, apache-mod_php, smartmontools, tentakel, ganglia-webfrontend, taktuk, fping
 #gnbd, gnbd-kernel-BOOT, 
 #maui
 
@@ -64,11 +57,6 @@ make install DESTDIR=$RPM_BUILD_ROOT SHAREDOC=%_docdir/%name-%version
 
 
 %post server
-#%_post_service rapidnat
-#if [ "`grep lsusb /etc/init.d/mandrake_everytime`" = "" ]; then
-#echo "#Prevent no keyboard on ia64 systems" >>/etc/init.d/mandrake_everytime
-#echo "lsusb -v >/dev/null" >>/etc/init.d/mandrake_everytime
-#fi
 TESTDHETH=`grep ETHDHCP_CLIENT /etc/clusterserver.conf`
 if [ -z "$TESTDHETH" ];	then
 	echo " old version of clusterscript, updating"
@@ -81,10 +69,8 @@ touch /tmp/first_setup
 
 %post client
 %_post_service clusterautosetup-client
-if [ "`grep lsusb /etc/init.d/mandrake_everytime`" = "" ]; then
-echo "#Prevent no keyboard on ia64 systems" >>/etc/init.d/mandrake_everytime
-echo "lsusb -v >/dev/null" >>/etc/init.d/mandrake_everytime
-fi
+# horrible hack to avoid dhclient.....
+perl -pi -e "s/\-x\s\/sbin\/dhclient/-x \/sbin\/dhclientsux/" /sbin/ifup
 
 %preun client
 %_preun_service clusterautosetup-client
@@ -98,45 +84,32 @@ rm -fr %{buildroot}
 %files client
 %defattr(-,root,root)
 %attr(755,root,root) %{_bindir}/setup_client_cluster.pl
-%attr(755,root,root) %{_bindir}/setup_add_media.pl
 %attr(755,root,root) %{_bindir}/setup_ka_deploy.pl
 %attr(755,root,root) %{_initrddir}/clusterautosetup-client
 %{_bindir}/fdisk_to_desc
-#%attr(755,root,root) %{_initrddir}/pbs_mom
 %{perl_vendorlib}/ka_deploy_cluster.pm
 %{perl_vendorlib}/client_cluster.pm
 %{perl_vendorlib}/fs_client.pm
 %{perl_vendorlib}/cluster_commonconf.pm
 %{perl_vendorlib}/cluster_clientconf.pm
 %{perl_vendorlib}/cluster_fonction_common.pm
-%{perl_vendorlib}/add_media_cluster.pm
-#%attr(644,root,root) /etc/X11/CLUSTER-1024.jpg
 %{_bindir}/ib-burn-firmware.pl
 
 %files server
 %defattr(-,root,root)
-%{_docdir}/%name-%version/rpmsrate
-%{_docdir}/%name-%version/compssUsers.pl
-#%attr(644,root,root) /etc/X11/CLUSTER-1024.jpg
-%config(noreplace) /var/www/html/iggi.html
-#/var/www/html/Cluster-logo.png
-%{_bindir}/ib-burn-firmware.pl
-%{_bindir}/ib-cluster-configurator.pl
-%{_bindir}/rapidnat
-%{_bindir}/sauvegarde
-%{_bindir}/fdisk_to_desc
+%attr(755,root,root) %{_bindir}/ib-burn-firmware.pl
+%attr(755,root,root) %{_bindir}/ib-cluster-configurator.pl
+%attr(755,root,root) %{_bindir}/rapidnat
+%attr(755,root,root) %{_bindir}/sauvegarde
+%attr(755,root,root) %{_bindir}/fdisk_to_desc
+%attr(755,root,root) %{_bindir}/setup_xconfig.pl
 #%{_initrddir}/rapidnat
-%attr(644,root,root) %config(noreplace) %{_sysconfdir}/muttrc
 %attr(755,root,root) %{_sysconfdir}/rc.sysinit_diskless
+%attr(755,root,root) %{_sysconfdir}/muttrc
 %attr(755,root,root) %{_bindir}/dhcpnode
 %attr(755,root,root) %{_bindir}/setup_test_user
-#%attr(755,root,root) %{_initrddir}/pbs_mom
-#%attr(755,root,root) %{_initrddir}/pbs_server
-#%attr(755,root,root) %{_initrddir}/pbs_sched
-#%attr(755,root,root) %{_initrddir}/pbs
 %attr(644,root,root) /var/spool/pbs/pbs_config.sample
 %{perl_vendorlib}/cluster_xconfig.pm
-%{perl_vendorlib}/maui_cluster.pm
 %{perl_vendorlib}/fs_server.pm
 %{perl_vendorlib}/nis_cluster.pm
 %{perl_vendorlib}/cluster_fonction_common.pm
@@ -146,6 +119,7 @@ rm -fr %{buildroot}
 %{perl_vendorlib}/add_nodes_to_dhcp_cluster.pm
 %{perl_vendorlib}/auto_add_nodes_cluster.pm
 %{perl_vendorlib}/dhcpnode_cluster.pm
+%{perl_vendorlib}/maui_cluster.pm
 %{perl_vendorlib}/pxe_server_cluster.pm
 %{perl_vendorlib}/auto_remove_nodes_cluster.pm
 %{perl_vendorlib}/dns_cluster.pm
@@ -154,15 +128,12 @@ rm -fr %{buildroot}
 %{perl_vendorlib}/cluster_set_compute.pm
 %{perl_vendorlib}/wakeup_node_cluster.pm
 %{perl_vendorlib}/user_nis_cluster.pm
-%{perl_vendorlib}/hdlists_server_cluster.pm
 %{perl_vendorlib}/postfix_cluster.pm
 %{perl_vendorlib}/dhcpdconf_server_cluster.pm
 %{perl_vendorlib}/pbs_cluster.pm
 %attr(755,root,root) %{_bindir}/prepare_diskless_image
-%attr(755,root,root) %{_bindir}/setup_xconfig.pl
 %attr(755,root,root) %{_bindir}/setup_pbs.pl
 %attr(755,root,root) %{_sbindir}/setup_auto_cluster
-%attr(755,root,root) %{_bindir}/setup_hdlists_server.pl
 %attr(755,root,root) %{_bindir}/setup_add_nodes_to_dhcp.pl
 %attr(755,root,root) %{_bindir}/setup_add_node.pl
 %attr(755,root,root) %{_bindir}/setup_install_cluster.pl
@@ -183,7 +154,9 @@ rm -fr %{buildroot}
 %attr(755,root,root) %{_bindir}/setup_dhcpdconf_server.pl
 %attr(755,root,root) %{_bindir}/update_cfg_after_ar_node.pl
 %attr(644,root,root) %config(noreplace) %{_sysconfdir}/clusterserver.conf
+%attr(644,root,root) %config(noreplace) %{_sysconfdir}/clusternode.conf
 %attr(644,root,root) %config(noreplace) %{_sysconfdir}/dhcpd.conf.pxe.single
 %attr(644,root,root) %config(noreplace) %{_sysconfdir}/dhcpd.conf.cluster
 
 
+%changelog
