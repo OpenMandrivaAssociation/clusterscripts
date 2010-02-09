@@ -1,6 +1,6 @@
 %define name clusterscripts
 %define version 3.0
-%define release %mkrel 3
+%define release %mkrel 4
 #define	perl_vendorlib /usr/lib/perl5/vendor_perl/5.8.7
 
 Summary: Tools to setup a cluster server and client
@@ -22,10 +22,9 @@ Multiple scripts to setup cluster server or client nodes.
 
 
 %package        client
-Summary:	Script to setup and retrieve information for client node.
-Group:		System/Deploiment
+Summary:	Script to setup and retrieve information for client node
+Group:		System/Cluster
 Conflicts:	%{name}-server, clusterautosetup-server
-prereq:		rpm-helper
 Requires:	bind-utils, ypbind, autofs, wget,openssh-clients, openssh-server, tftp, nfs-utils, rsh-server, ntp, ka-deploy-source-node, oar-user, oar-node, usbutils, urpmi-parallel-ka-run, bc, dhcpcd, smartmontools, ganglia-core, taktuk
 
 %description client
@@ -33,8 +32,8 @@ script to retrieve information and setup cluster client node from
 a server.
 
 %package server 
-Summary:        Script to setup a server node.
-Group:		System/Deploiment
+Summary:        Script to setup a server node
+Group:		System/Cluster
 Conflicts:	%{name}-client, clusterautosetup-client
 Requires:	bind, bind-utils, nfs-utils, ypserv, yp-tools, ypbind, pxe, tftp-server, xinetd, make, dhcp-server, oar-user, oar-node, oar-server, openssh-server, openssh-clients, ntp, ganglia-gmetad, urpmi-parallel-ka-run, apache, postfix, iptables, ganglia-core, rpm-helper, syslinux, usbutils, bc, php-cli, apache-mod_php, smartmontools, tentakel, ganglia-webfrontend, taktuk, fping
 #gnbd, gnbd-kernel-BOOT, 
