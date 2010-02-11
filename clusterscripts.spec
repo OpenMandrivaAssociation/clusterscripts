@@ -36,6 +36,7 @@ Summary:        Common clusterscripts
 Group:		System/Cluster
 
 %description common
+common libs
 
 
 %package server 
