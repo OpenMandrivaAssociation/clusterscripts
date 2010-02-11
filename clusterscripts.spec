@@ -1,6 +1,6 @@
 %define name clusterscripts
 %define version 3.2
-%define release %mkrel 1
+%define release %mkrel 2
 #define	perl_vendorlib /usr/lib/perl5/vendor_perl/5.8.7
 
 Summary: Tools to setup a cluster server and client
@@ -107,6 +107,7 @@ rm -fr %{buildroot}
 %{perl_vendorlib}/cluster_fonction_common.pm
 
 %files server
+%doc ldap_base.ldif sldap_cluster.conf
 %defattr(-,root,root)
 %attr(755,root,root) %{_bindir}/ib-cluster-configurator.pl
 %attr(755,root,root) %{_bindir}/rapidnat
