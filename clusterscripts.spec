@@ -1,6 +1,6 @@
 %define name clusterscripts
 %define version 3.2
-%define release %mkrel 3
+%define release %mkrel 4
 #define	perl_vendorlib /usr/lib/perl5/vendor_perl/5.8.7
 
 Summary: Tools to setup a cluster server and client
@@ -44,6 +44,7 @@ Summary:        Script to setup a server node
 Group:		System/Cluster
 Conflicts:	clusterautosetup-client
 Requires:	bind, bind-utils, nfs-utils, ypserv, yp-tools, ypbind, pxe, tftp-server, xinetd, make, dhcp-server, oar-user, oar-node, oar-server, openssh-server, openssh-clients, ntp, ganglia-gmetad, urpmi-parallel-ka-run, apache, postfix, iptables, ganglia-core, rpm-helper, syslinux, usbutils, bc, php-cli, apache-mod_php, smartmontools, tentakel, ganglia-webfrontend, taktuk, fping, openldap-servers, openldap-clients, clusterscripts-common
+Suggests:	phpldapadmin
 #gnbd, gnbd-kernel-BOOT, 
 #maui
 
