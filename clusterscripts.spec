@@ -1,6 +1,6 @@
 %define name clusterscripts
-%define version 3.2
-%define release %mkrel 4
+%define version 3.3
+%define release %mkrel 1
 #define	perl_vendorlib /usr/lib/perl5/vendor_perl/5.8.7
 
 Summary: Tools to setup a cluster server and client
@@ -38,12 +38,21 @@ Group:		System/Cluster
 %description common
 common libs
 
+%package server-conf
+Summary:        clusterscript configuration file
+Group:          System/Cluster
+Conflicts:      clusterautosetup-client
+Requires:       clusterscripts-common
+
+%description server-conf
+The configuration file of clusterscripts
 
 %package server 
 Summary:        Script to setup a server node
 Group:		System/Cluster
 Conflicts:	clusterautosetup-client
-Requires:	bind, bind-utils, nfs-utils, ypserv, yp-tools, ypbind, pxe, tftp-server, xinetd, make, dhcp-server, oar-user, oar-node, oar-server, openssh-server, openssh-clients, ntp, ganglia-gmetad, urpmi-parallel-ka-run, apache, postfix, iptables, ganglia-core, rpm-helper, syslinux, usbutils, bc, php-cli, apache-mod_php, smartmontools, tentakel, ganglia-webfrontend, taktuk, fping, openldap-servers, openldap-clients, clusterscripts-common
+Requires:	bind, bind-utils, nfs-utils, ypserv, yp-tools, ypbind, make, oar-user, oar-node, oar-server, openssh-server, openssh-clients, ntp, ganglia-gmetad, urpmi-parallel-ka-run, apache, postfix, iptables, ganglia-core, rpm-helper, syslinux, usbutils, bc, php-cli, apache-mod_php, smartmontools, tentakel, ganglia-webfrontend, taktuk, fping, openldap-servers, openldap-clients
+Requires:	clusterscripts-common, clusterscripts-server-pxe, clusterscripts-server-conf
 Suggests:	phpldapadmin
 #gnbd, gnbd-kernel-BOOT, 
 #maui
@@ -53,9 +62,19 @@ Scripts to automatically setup some services
 NIS, DNS, NFS, PXE, DHCP, NAMED, LDAP, authd and ssh Keys,
 tftp server, ganglia server, OAR, SSH.
 
+%package server-pxe
+Summary:        Script to setup a PXE server
+Group:          System/Cluster
+Conflicts:      clusterautosetup-client
+Requires:       pxe, tftp-server, xinetd, dhcp-server, clusterscripts-common, syslinux
+
+%description server-pxe
+Scripts to automatically setup a PXE server with dhcp
+
 %prep
 rm -rf ${buildroot}
 %setup -q -n %{name}-devel
+
 
 %build
 #make build
@@ -66,7 +85,7 @@ mkdir -p $RPM_BUILD_ROOT/%_docdir/%name-%version
 make install DESTDIR=$RPM_BUILD_ROOT SHAREDOC=%_docdir/%name-%version
 
 
-%post server
+%post server-conf
 TESTDHETH=`grep ETHDHCP_CLIENT /etc/clusterserver.conf`
 if [ -z "$TESTDHETH" ];	then
 	echo " old version of clusterscript, updating"
@@ -102,10 +121,30 @@ rm -fr %{buildroot}
 %{perl_vendorlib}/cluster_clientconf.pm
 
 %files common
-%attr(755,root,root) %{_bindir}/fdisk_to_desc
+#%attr(755,root,root) %{_bindir}/fdisk_to_desc
 %{_bindir}/ib-burn-firmware.pl
 %{perl_vendorlib}/cluster_commonconf.pm
 %{perl_vendorlib}/cluster_fonction_common.pm
+
+%files server-conf
+%attr(755,root,root) %{_sysconfdir}/muttrc
+%attr(755,root,root) %{_sysconfdir}/rc.sysinit_diskless
+%attr(644,root,root) %config(noreplace) %{_sysconfdir}/clusterserver.conf
+%attr(644,root,root) %config(noreplace) %{_sysconfdir}/clusternode.conf
+%attr(644,root,root) %config(noreplace) %{_sysconfdir}/dhcpd.conf.pxe.single
+%attr(644,root,root) %config(noreplace) %{_sysconfdir}/dhcpd.conf.cluster
+
+%files server-pxe
+%attr(755,root,root) %{_bindir}/dhcpnode
+%{perl_vendorlib}/add_nodes_to_dhcp_cluster.pm
+%{perl_vendorlib}/pxe_server_cluster.pm
+%{perl_vendorlib}/dhcpnode_cluster.pm
+%{perl_vendorlib}/dhcpdconf_server_cluster.pm
+%attr(755,root,root) %{_bindir}/setup_add_nodes_to_dhcp.pl
+%attr(755,root,root) %{_bindir}/setup_pxe_server.pl
+%attr(755,root,root) %{_bindir}/setup_dhcpdconf_server.pl
+%attr(755,root,root) %{_bindir}/prepare_diskless_image
+
 
 %files server
 %doc ldap_base.ldif sldap_cluster.conf
@@ -115,9 +154,6 @@ rm -fr %{buildroot}
 %attr(755,root,root) %{_bindir}/sauvegarde
 %attr(755,root,root) %{_bindir}/setup_xconfig.pl
 #%{_initrddir}/rapidnat
-%attr(755,root,root) %{_sysconfdir}/rc.sysinit_diskless
-%attr(755,root,root) %{_sysconfdir}/muttrc
-%attr(755,root,root) %{_bindir}/dhcpnode
 %attr(755,root,root) %{_bindir}/setup_test_user
 %attr(644,root,root) /var/spool/pbs/pbs_config.sample
 %{perl_vendorlib}/cluster_xconfig.pm
@@ -126,11 +162,8 @@ rm -fr %{buildroot}
 %{perl_vendorlib}/ldap_cluster.pm
 %{perl_vendorlib}/cluster_serverconf.pm
 %{perl_vendorlib}/install_cluster.pm
-%{perl_vendorlib}/add_nodes_to_dhcp_cluster.pm
 %{perl_vendorlib}/auto_add_nodes_cluster.pm
-%{perl_vendorlib}/dhcpnode_cluster.pm
 %{perl_vendorlib}/maui_cluster.pm
-%{perl_vendorlib}/pxe_server_cluster.pm
 %{perl_vendorlib}/auto_remove_nodes_cluster.pm
 %{perl_vendorlib}/dns_cluster.pm
 %{perl_vendorlib}/server_cluster.pm
@@ -139,12 +172,9 @@ rm -fr %{buildroot}
 %{perl_vendorlib}/wakeup_node_cluster.pm
 %{perl_vendorlib}/user_common_cluster.pm
 %{perl_vendorlib}/postfix_cluster.pm
-%{perl_vendorlib}/dhcpdconf_server_cluster.pm
 %{perl_vendorlib}/pbs_cluster.pm
-%attr(755,root,root) %{_bindir}/prepare_diskless_image
 %attr(755,root,root) %{_bindir}/setup_pbs.pl
 %attr(755,root,root) %{_sbindir}/setup_auto_cluster
-%attr(755,root,root) %{_bindir}/setup_add_nodes_to_dhcp.pl
 %attr(755,root,root) %{_bindir}/setup_add_node.pl
 %attr(755,root,root) %{_bindir}/setup_install_cluster.pl
 %attr(755,root,root) %{_bindir}/setup_dns.pl
@@ -161,12 +191,6 @@ rm -fr %{buildroot}
 %attr(755,root,root) %{_bindir}/setup_postfix.pl
 %attr(755,root,root) %{_bindir}/setup_admin.pl
 %attr(755,root,root) %{_bindir}/setup_compute.pl
-%attr(755,root,root) %{_bindir}/setup_pxe_server.pl
-%attr(755,root,root) %{_bindir}/setup_dhcpdconf_server.pl
 %attr(755,root,root) %{_bindir}/update_cfg_after_ar_node.pl
-%attr(644,root,root) %config(noreplace) %{_sysconfdir}/clusterserver.conf
-%attr(644,root,root) %config(noreplace) %{_sysconfdir}/clusternode.conf
-%attr(644,root,root) %config(noreplace) %{_sysconfdir}/dhcpd.conf.pxe.single
-%attr(644,root,root) %config(noreplace) %{_sysconfdir}/dhcpd.conf.cluster
 
 %changelog
