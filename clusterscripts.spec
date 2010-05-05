@@ -1,5 +1,5 @@
 %define name clusterscripts
-%define version 3.3
+%define version 3.4
 %define release %mkrel 1
 #define	perl_vendorlib /usr/lib/perl5/vendor_perl/5.8.7
 
@@ -66,10 +66,11 @@ tftp server, ganglia server, OAR, SSH.
 Summary:        Script to setup a PXE server
 Group:          System/Cluster
 Conflicts:      clusterautosetup-client
-Requires:       pxe, tftp-server, xinetd, dhcp-server, clusterscripts-common, syslinux
+Requires:       pxe, tftp-server, xinetd, dhcp-server, syslinux, clusterscripts-server-conf
+Suggests:	ka-deploy-source-node
 
 %description server-pxe
-Scripts to automatically setup a PXE server with dhcp
+Scripts to automatically setup a PXE server with DHCP server
 
 %prep
 rm -rf ${buildroot}
@@ -133,6 +134,7 @@ rm -fr %{buildroot}
 %attr(644,root,root) %config(noreplace) %{_sysconfdir}/clusternode.conf
 %attr(644,root,root) %config(noreplace) %{_sysconfdir}/dhcpd.conf.pxe.single
 %attr(644,root,root) %config(noreplace) %{_sysconfdir}/dhcpd.conf.cluster
+%{perl_vendorlib}/cluster_serverconf.pm
 
 %files server-pxe
 %attr(755,root,root) %{_bindir}/dhcpnode
@@ -160,19 +162,18 @@ rm -fr %{buildroot}
 %{perl_vendorlib}/fs_server.pm
 %{perl_vendorlib}/nis_cluster.pm
 %{perl_vendorlib}/ldap_cluster.pm
-%{perl_vendorlib}/cluster_serverconf.pm
 %{perl_vendorlib}/install_cluster.pm
 %{perl_vendorlib}/auto_add_nodes_cluster.pm
 %{perl_vendorlib}/maui_cluster.pm
 %{perl_vendorlib}/auto_remove_nodes_cluster.pm
 %{perl_vendorlib}/dns_cluster.pm
-%{perl_vendorlib}/server_cluster.pm
 %{perl_vendorlib}/cluster_set_admin.pm
 %{perl_vendorlib}/cluster_set_compute.pm
 %{perl_vendorlib}/wakeup_node_cluster.pm
 %{perl_vendorlib}/user_common_cluster.pm
 %{perl_vendorlib}/postfix_cluster.pm
 %{perl_vendorlib}/pbs_cluster.pm
+%{perl_vendorlib}/server_cluster.pm
 %attr(755,root,root) %{_bindir}/setup_pbs.pl
 %attr(755,root,root) %{_sbindir}/setup_auto_cluster
 %attr(755,root,root) %{_bindir}/setup_add_node.pl
