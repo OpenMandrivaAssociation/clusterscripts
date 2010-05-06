@@ -1,5 +1,5 @@
 %define name clusterscripts
-%define version 3.4
+%define version 3.5
 %define release %mkrel 1
 #define	perl_vendorlib /usr/lib/perl5/vendor_perl/5.8.7
 
@@ -142,6 +142,7 @@ rm -fr %{buildroot}
 %{perl_vendorlib}/pxe_server_cluster.pm
 %{perl_vendorlib}/dhcpnode_cluster.pm
 %{perl_vendorlib}/dhcpdconf_server_cluster.pm
+%{perl_vendorlib}/wakeup_node_cluster.pm
 %attr(755,root,root) %{_bindir}/setup_add_nodes_to_dhcp.pl
 %attr(755,root,root) %{_bindir}/setup_pxe_server.pl
 %attr(755,root,root) %{_bindir}/setup_dhcpdconf_server.pl
@@ -169,7 +170,6 @@ rm -fr %{buildroot}
 %{perl_vendorlib}/dns_cluster.pm
 %{perl_vendorlib}/cluster_set_admin.pm
 %{perl_vendorlib}/cluster_set_compute.pm
-%{perl_vendorlib}/wakeup_node_cluster.pm
 %{perl_vendorlib}/user_common_cluster.pm
 %{perl_vendorlib}/postfix_cluster.pm
 %{perl_vendorlib}/pbs_cluster.pm
