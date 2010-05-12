@@ -43,6 +43,7 @@ Summary:        clusterscript configuration file
 Group:          System/Cluster
 Conflicts:      clusterautosetup-client
 Requires:       clusterscripts-common
+Conflicts:	clusterscripts-server < 2.0
 
 %description server-conf
 The configuration file of clusterscripts
