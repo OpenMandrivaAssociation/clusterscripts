@@ -1,6 +1,6 @@
 %define name clusterscripts
 %define version 3.5
-%define release %mkrel 1
+%define release %mkrel 2
 #define	perl_vendorlib /usr/lib/perl5/vendor_perl/5.8.7
 
 Summary: Tools to setup a cluster server and client
@@ -43,7 +43,6 @@ Summary:        clusterscript configuration file
 Group:          System/Cluster
 Conflicts:      clusterautosetup-client
 Requires:       clusterscripts-common
-Conflicts:	clusterscripts-server < 2.0
 
 %description server-conf
 The configuration file of clusterscripts
@@ -64,14 +63,15 @@ NIS, DNS, NFS, PXE, DHCP, NAMED, LDAP, authd and ssh Keys,
 tftp server, ganglia server, OAR, SSH.
 
 %package server-pxe
-Summary:        Script to setup a PXE server
+Summary:        Script to setup a PXE server, dhcpd tftp and optiannly a DNS server
 Group:          System/Cluster
 Conflicts:      clusterautosetup-client
 Requires:       pxe, tftp-server, xinetd, dhcp-server, syslinux, clusterscripts-server-conf
-Suggests:	ka-deploy-source-node
+Suggests:	ka-deploy-source-node bind bind-utils
 
 %description server-pxe
-Scripts to automatically setup a PXE server with DHCP server
+Scripts to automatically setup a PXE server with DHCP server.
+A DNS server is also optionnal
 
 %prep
 rm -rf ${buildroot}
@@ -144,9 +144,11 @@ rm -fr %{buildroot}
 %{perl_vendorlib}/dhcpnode_cluster.pm
 %{perl_vendorlib}/dhcpdconf_server_cluster.pm
 %{perl_vendorlib}/wakeup_node_cluster.pm
+%{perl_vendorlib}/dns_cluster.pm
 %attr(755,root,root) %{_bindir}/setup_add_nodes_to_dhcp.pl
 %attr(755,root,root) %{_bindir}/setup_pxe_server.pl
 %attr(755,root,root) %{_bindir}/setup_dhcpdconf_server.pl
+%attr(755,root,root) %{_bindir}/setup_dns.pl
 %attr(755,root,root) %{_bindir}/prepare_diskless_image
 
 
@@ -168,7 +170,6 @@ rm -fr %{buildroot}
 %{perl_vendorlib}/auto_add_nodes_cluster.pm
 %{perl_vendorlib}/maui_cluster.pm
 %{perl_vendorlib}/auto_remove_nodes_cluster.pm
-%{perl_vendorlib}/dns_cluster.pm
 %{perl_vendorlib}/cluster_set_admin.pm
 %{perl_vendorlib}/cluster_set_compute.pm
 %{perl_vendorlib}/user_common_cluster.pm
@@ -179,7 +180,6 @@ rm -fr %{buildroot}
 %attr(755,root,root) %{_sbindir}/setup_auto_cluster
 %attr(755,root,root) %{_bindir}/setup_add_node.pl
 %attr(755,root,root) %{_bindir}/setup_install_cluster.pl
-%attr(755,root,root) %{_bindir}/setup_dns.pl
 %attr(755,root,root) %{_bindir}/setup_server_cluster.pl
 %attr(755,root,root) %{_bindir}/setup_recup_cpus.pl
 %attr(755,root,root) %{_bindir}/setup_nis.pl
