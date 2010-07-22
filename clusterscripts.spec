@@ -1,6 +1,6 @@
 %define name clusterscripts
 %define version 3.5
-%define release %mkrel 2
+%define release %mkrel 3
 #define	perl_vendorlib /usr/lib/perl5/vendor_perl/5.8.7
 
 Summary: Tools to setup a cluster server and client
