@@ -82,9 +82,9 @@ rm -rf ${buildroot}
 #make build
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/%_docdir/%name-%version
-make install DESTDIR=$RPM_BUILD_ROOT SHAREDOC=%_docdir/%name-%version
+rm -rf %{buildroot}
+mkdir -p %{buildroot}/%_docdir/%name-%version
+make install DESTDIR=%{buildroot} SHAREDOC=%_docdir/%name-%version
 
 
 %post server-conf
