@@ -1,6 +1,6 @@
 %define name clusterscripts
 %define version 3.5
-%define release %mkrel 4
+%define release 5
 #define	perl_vendorlib /usr/lib/perl5/vendor_perl/5.8.7
 
 Summary: Tools to setup a cluster server and client
@@ -25,7 +25,7 @@ Multiple scripts to setup cluster server or client nodes.
 Summary:	Script to setup and retrieve information for client node
 Group:		System/Cluster
 Conflicts:	clusterautosetup-server
-Requires:	bind-utils, ypbind, autofs, wget,openssh-clients, openssh-server, tftp, nfs-utils, rsh-server, ntp, ka-deploy-source-node, oar-user, oar-node, usbutils, urpmi-parallel-ka-run, bc, dhcpcd, smartmontools, ganglia-core, taktuk, clusterscripts-common
+Requires:	bind-utils, ypbind, autofs, wget,openssh-clients, openssh-server, tftp, nfs-utils, netkit-rsh-server, ntp, ka-deploy-source-node, oar-user, oar-node, usbutils, urpmi-parallel-ka-run, bc, dhcpcd, smartmontools, ganglia-core, taktuk, clusterscripts-common
 
 %description client
 Scripts to retrieve information and setup cluster client node from 
