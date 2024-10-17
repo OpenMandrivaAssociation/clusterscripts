@@ -13,7 +13,7 @@ License: 	GPL
 Group: 		System/Cluster
 BuildRoot: 	%{_tmppath}/%{name}-buildroot
 Prefix: 	%{_prefix}
-URL:		http://www.mandriva.com
+URL:		https://www.mandriva.com
 buildarch:	noarch
 #obsolotes:	clusterautosetup-server
 
