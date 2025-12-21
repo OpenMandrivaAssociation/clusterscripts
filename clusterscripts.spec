@@ -17,6 +17,7 @@ URL:		https://www.mandriva.com
 buildarch:	noarch
 #obsolotes:	clusterautosetup-server
 
+BuildRequires:	make
 %description
 Multiple scripts to setup cluster server or client nodes.
 
